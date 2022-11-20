@@ -1,0 +1,5 @@
+echo '================='
+echo '권한을 주는 중...'
+echo '================='
+
+chown -R ec2-user /var/www/front
