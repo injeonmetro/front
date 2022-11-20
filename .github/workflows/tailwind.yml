@@ -47,10 +47,12 @@ jobs:
       - name: Install PHPSniffer
         run: git clone https://github.com/squizlabs/PHP_CodeSniffer.git && cd PHP_CodeSniffer && php bin/phpcbf /home/runner/work/front/front/public
 
-      - name: Build Tailwind CSS
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
+      
+      - name: Build Tailwind CSS
         run: cd tailwindcss && npm install -D tailwindcss && npx tailwindcss init && npx tailwindcss -i /home/runner/work/front/front/tailwindcss/src/input.css -o /home/runner/work/front/front/public/resources/style.css --minify
 
       - name: Deploy
