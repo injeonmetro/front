@@ -21,11 +21,11 @@ jobs:
       - run: cd tailwindcss
       - run: npm install -D tailwindcss
       - run: npx tailwindcss init
-      - run: npx tailwindcss -i ${GITHUB_ACTION_PATH}/tailwindcss/src/input.css -o ${GITHUB_ACTION_PATH}/public/resources/style.css
+      - run: npx tailwindcss -i /home/runner/work/front/front/tailwindcss/src/input.css -o /home/runner/work/front/front/public/resources/style.css
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.AUTHENTICATION_TOKEN }}
           BRANCH: compiled  # 배포될 브랜치
-          FOLDER: ${GITHUB_ACTION_PATH} # 이 폴더에 있는 파일을 배포
+          FOLDER: /home/runner/work/front/front # 이 폴더에 있는 파일을 배포
