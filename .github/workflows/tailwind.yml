@@ -7,11 +7,47 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.2']
+    continue-on-error: ${{ matrix.php == '8.2' }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           persist-credentials: false
+
+      - name: Setup ini config
+        id: set_ini
+        run: |
+          # Set the "short_open_tag" ini to make sure specific conditions are tested.
+          # Also turn on error_reporting to ensure all notices are shown.
+          if [[ ${{ matrix.custom_ini }} == true && "${{ matrix.php }}" == '5.5' ]]; then
+            echo 'PHP_INI=error_reporting=-1, display_errors=On, date.timezone=Australia/Sydney, short_open_tag=On, asp_tags=On' >> $GITHUB_OUTPUT
+          elif [[ ${{ matrix.custom_ini }} == true && "${{ matrix.php }}" == '7.0' ]]; then
+            echo 'PHP_INI=error_reporting=-1, display_errors=On, date.timezone=Australia/Sydney, short_open_tag=On' >> $GITHUB_OUTPUT
+          else
+            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
+          coverage: none
+          tools: cs2pr
+      
+      - name: Install Composer dependencies - with ignore platform
+        uses: "ramsey/composer-install@v2"
+        with:
+          composer-options: --ignore-platform-reqs
+
+      - name: Install PHPSniffer
+        run: git clone https://github.com/squizlabs/PHP_CodeSniffer.git
+        run: cd PHP_CodeSniffer
+        run: php bin/phpcbf /home/runner/work/front/front/public
 
       - name: Build Tailwind CSS
         uses: actions/setup-node@v3
@@ -21,7 +57,7 @@ jobs:
       - run: cd tailwindcss
       - run: npm install -D tailwindcss
       - run: npx tailwindcss init
-      - run: npx tailwindcss -i /home/runner/work/front/front/tailwindcss/src/input.css -o /home/runner/work/front/front/public/resources/style.css
+      - run: npx tailwindcss -i /home/runner/work/front/front/tailwindcss/src/input.css -o /home/runner/work/front/front/public/resources/style.css --minify
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
