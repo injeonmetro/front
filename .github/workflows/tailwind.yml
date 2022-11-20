@@ -21,7 +21,7 @@ jobs:
       - run: cd tailwindcss
       - run: npm install -D tailwindcss
       - run: npx tailwindcss init
-      - run: npx tailwindcss -i '$GITHUB_ACTION_PATH/tailwindcss/src/input.css' -o '$GITHUB_ACTION_PATH/public/resources/style.css'
+      - run: npx tailwindcss -i $GITHUB_ACTION_PATH/tailwindcss/src/input.css -o $GITHUB_ACTION_PATH/public/resources/style.css
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
