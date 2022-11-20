@@ -1,7 +1,6 @@
 echo '============================'
 echo 'Running install_dependencies'
 echo '============================'
-
 cd /home/ec2-user/tailwindcss
 npm install -D tailwindcss
 npx tailwindcss init
