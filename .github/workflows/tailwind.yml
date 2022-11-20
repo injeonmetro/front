@@ -31,11 +31,6 @@ jobs:
           coverage: none
           tools: cs2pr
       
-      - name: Install Composer dependencies - with ignore platform
-        uses: "ramsey/composer-install@v2"
-        with:
-          composer-options: --ignore-platform-reqs
-
       - name: Install PHPSniffer
         run: git clone https://github.com/squizlabs/PHP_CodeSniffer.git && cd PHP_CodeSniffer && php bin/phpcbf /home/runner/work/front/front/public
 
