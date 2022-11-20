@@ -1,0 +1,28 @@
+name: Build TailwindCSS
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+        with:
+          persist-credentials: false
+
+      - name: Install and Build
+        uses: actions/setup-node@v1
+      - run: cd tailwindcss
+      - run: npm install -D tailwindcss
+      - run: npx tailwindcss init
+      - run: npx tailwindcss -i ./src/input.css -o ../public/resources/style.css
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: compiled  # 배포될 브랜치
+          FOLDER: $GITHUB_ACTION_PATH # 이 폴더에 있는 파일을 배포
