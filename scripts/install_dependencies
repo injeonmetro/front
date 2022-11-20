@@ -1,7 +1,3 @@
 echo '============================'
 echo 'Running install_dependencies'
 echo '============================'
-cd /home/ec2-user/tailwindcss
-npm install -D tailwindcss
-npx tailwindcss init
-npx tailwindcss -i ./src/input.css -o /var/www/front/cloud/resources/style.css
