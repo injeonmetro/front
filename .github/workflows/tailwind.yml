@@ -9,12 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.1
+        uses: actions/checkout@v3
         with:
           persist-credentials: false
 
-      - name: Install and Build
-        uses: actions/setup-node@v1
+      - name: Build Tailwind CSS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
       - run: cd tailwindcss
       - run: npm install -D tailwindcss
       - run: npx tailwindcss init
@@ -23,6 +26,6 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.AUTHENTICATION_TOKEN }}
           BRANCH: compiled  # 배포될 브랜치
           FOLDER: $GITHUB_ACTION_PATH # 이 폴더에 있는 파일을 배포
