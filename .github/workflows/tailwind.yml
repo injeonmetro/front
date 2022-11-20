@@ -45,19 +45,13 @@ jobs:
           composer-options: --ignore-platform-reqs
 
       - name: Install PHPSniffer
-        run: git clone https://github.com/squizlabs/PHP_CodeSniffer.git
-        run: cd PHP_CodeSniffer
-        run: php bin/phpcbf /home/runner/work/front/front/public
+        run: git clone https://github.com/squizlabs/PHP_CodeSniffer.git && cd PHP_CodeSniffer && php bin/phpcbf /home/runner/work/front/front/public
 
       - name: Build Tailwind CSS
         uses: actions/setup-node@v3
         with:
           node-version: 16
-
-      - run: cd tailwindcss
-      - run: npm install -D tailwindcss
-      - run: npx tailwindcss init
-      - run: npx tailwindcss -i /home/runner/work/front/front/tailwindcss/src/input.css -o /home/runner/work/front/front/public/resources/style.css --minify
+        run: cd tailwindcss && npm install -D tailwindcss && npx tailwindcss init && npx tailwindcss -i /home/runner/work/front/front/tailwindcss/src/input.css -o /home/runner/work/front/front/public/resources/style.css --minify
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
